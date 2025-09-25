@@ -1,0 +1,5 @@
+com\simplelibrary\Book.class
+com\simplelibrary\BorrowRecord.class
+com\simplelibrary\Library.class
+com\simplelibrary\User.class
+com\simplelibrary\Main.class

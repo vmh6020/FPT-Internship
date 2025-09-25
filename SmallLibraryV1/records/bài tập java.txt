@@ -1,0 +1,199 @@
+📘 BÀI TẬP LỚN – LẬP TRÌNH JAVA CƠ BẢN & OOP
+
+Đề tài: Ứng dụng Quản lý Thư viện Mini
+
+1. Mục tiêu
+
+Ôn tập Java cơ bản (kiểu dữ liệu, điều kiện, vòng lặp, collection).
+Vận dụng OOP (class, object, kế thừa, interface, encapsulation).
+Tổ chức mã nguồn thành các lớp rõ ràng.
+Thực hành quản lý dữ liệu với ArrayList.
+Biết cách đọc/ghi dữ liệu ra file.
+Làm quen với thiết kế chương trình có menu console.
+
+2. Mô tả bài toán
+
+Xây dựng ứng dụng console quản lý thư viện mini:
+Quản lý sách (mỗi đầu sách có số lượng).
+Quản lý người dùng.
+Người dùng có thể mượn và trả sách.
+Mỗi người dùng có danh sách các sách đã mượn.
+Dữ liệu được lưu trữ ra file khi thoát và nạp lại khi khởi động.
+
+3. Yêu cầu chức năng
+3.1. Quản lý sách
+
+Mỗi Book có thông tin:
+id (mã số duy nhất)
+title (tên sách)
+author (tác giả)
+year (năm xuất bản)
+quantity (số lượng còn lại trong thư viện)
+
+Chức năng:
+
+Thêm mới sách.
+Xoá sách theo id.
+Cập nhật thông tin hoặc số lượng sách.
+Tìm kiếm sách theo tên hoặc tác giả.
+Hiển thị danh sách sách hiện có.
+
+3.2. Quản lý người dùng
+
+Mỗi User có thông tin:
+id
+cccd
+name
+birthdate
+address
+
+Danh sách sách đã mượn (list BorrowRecord).
+
+Chức năng:
+Thêm người dùng mới.
+Hiển thị danh sách người dùng và các sách họ đang mượn.
+
+3.3. Mượn và trả sách
+
+Khi mượn:
+
+Nhập id người dùng, id sách và số lượng.
+Nếu sách còn đủ số lượng thì cho mượn.
+Giảm số lượng sách trong thư viện.
+Ghi nhận sách đã mượn vào danh sách của người dùng.
+
+Khi trả:
+
+Nhập id người dùng, id sách và số lượng.
+Tăng số lượng sách trong thư viện.
+Giảm số lượng sách trong danh sách mượn của người dùng.
+Không cho trả quá số lượng đã mượn.
+
+3.4. Lưu và nạp dữ liệu từ file
+File books.txt lưu danh sách sách:
+1,Harry Potter,J.K.Rowling,1997,5
+2,Lập Trình Java,Nguyen Van A,2020,10
+
+File users.txt lưu danh sách người dùng:
+1,033012112233,Nguyen Van B,01/01/2000,Hà Nội
+2,033012112233,Tran Thi C,01/01/2000,Hà Nội
+
+
+File borrow_records.txt (nâng cao, khuyến khích):
+
+userId=1,bookId=2,quantity=2
+userId=1,bookId=1,quantity=1
+
+
+Khi chạy chương trình: đọc file để khởi tạo dữ liệu.
+Khi thoát: ghi lại toàn bộ dữ liệu ra file.
+
+3.5. Menu chương trình
+================= LIBRARY MENU =================
+1. Thêm sách
+2. Xoá sách
+3. Cập nhật thông tin sách
+4. Tìm kiếm sách
+5. Hiển thị danh sách sách
+6. Thêm người dùng
+7. Hiển thị danh sách người dùng + sách đã mượn
+8. Mượn sách
+9. Trả sách
+0. Thoát (lưu dữ liệu ra file)
+===============================================
+Chọn chức năng: 
+
+4. Gợi ý thiết kế class
+class User {
+    private int id;
+    private String name;
+    private List<BorrowRecord> borrowedBooks;
+}
+
+class Book {
+    private int id;
+    private String title;
+    private String author;
+    private int year;
+    private int quantity;
+    public boolean isAvailable() { return quantity > 0; }
+}
+
+class BorrowRecord {
+    private Book book;
+    private int quantity;
+}
+
+class Library {
+    private List<Book> books;
+    private List<User> users;
+    // các hàm quản lý sách, người dùng, mượn trả
+}
+1. Quản lý Mượn & Trả Sách
+
+Người dùng có thể mượn sách:
+Mỗi người dùng tối đa được mượn 3 cuốn cùng lúc.
+Khi mượn, hệ thống ghi:
+	borrowDate = ngày hiện tại.
+	dueDate = borrowDate + 7 ngày.
+
+Người dùng trả sách:
+	Nếu trả muộn → ghi log:
+yyyy-MM-dd HH:mm:ss | User <id> trả muộn Book <id> (trễ N ngày)
+
+2. Menu Xem sách quá hạn hiển thị:
+
+--- DANH SÁCH SÁCH QUÁ HẠN ---
+
+User ID: 2 | User Name: Nguyễn Văn A
+Book ID: 5 | Title: Java Cơ bản
+Borrow Date: 2025-09-01
+Due Date: 2025-09-08
+Trễ: 12 ngày
+
+----------------------------------
+
+Tổng số sách quá hạn: 1
+
+3. Bổ sung ghi log hoạt động
+Mọi hoạt động (mượn, trả, tìm kiếm, thêm dữ liệu) được ghi vào file logs.txt với cấu trúc:
+yyyy-MM-dd HH:mm:ss | <chi tiết hoạt động>
+
+VD: 
+[2025-09-20 10:15:23] User 1 (Nguyễn Văn C) mượn Book 2 (Cơ sở dữ liệu)
+[2025-09-20 11:05:10] User 2 (Trần Văn D) trả Book 1 (Lập trình Java)
+[2025-09-20 11:20:00] Đã thêm sách "Cấu trúc dữ liệu" (id=3)
+
+3. Lưu trữ dữ liệu
+Dữ liệu lưu trong các file JSON:
+books.json – thông tin sách.
+[
+  {
+    "id": 2,
+    "title": "Cơ sở dữ liệu",
+    "author": "Trần Văn B",
+    "year": 2021,
+    "quantity": 2
+  }, ...
+]
+users.json – thông tin người dùng.
+[
+  {
+    "id": 1,
+    "name": "Nguyễn Văn C",
+    "cccd": "123123123",
+    "birthdate" : "12/12/2000",
+    "address": "HANOi"
+  }, ...
+]
+borrows.json – thông tin mượn sách (có cả borrowDate, dueDate).
+[
+  {
+    "userId": 1,
+    "bookId": 1,
+    "borrowDate": "2025-09-20",
+    "dueDate" : "2025-09-27",
+    "returnDate": null   // null nghĩa là chưa trả
+  }, ...
+]
+
